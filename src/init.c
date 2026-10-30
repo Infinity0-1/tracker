@@ -1,14 +1,14 @@
-static int trac_find(char *trac_path)
+static int find_trac_dir(char *trac_path)
 {
     char *path = getcwd(NULL, 0);
     if (path == NULL)
-        return error_print("trac init: unable to get working directory.");
+        return fprintf(stderr, "trac: unable to get working directory.\n");
 
     while (strcmp(path, "/home"))
     {
         DIR *directory = opendir(path);
         if (directory == NULL) 
-            return error_print("trac init: unable to open path.");
+            return fprintf(stderr, "trac: unable to open path.\n");
 
         struct dirent *file;
         while ((file = readdir(directory)) != NULL)
@@ -16,7 +16,7 @@ static int trac_find(char *trac_path)
             if (!strcmp(file->d_name, ".trac"))
             {
                 snprintf(trac_path, PATH_MAX, "%s/%s", path, ".trac");
-                return error_print("Tracker is already initialized.");
+                return EXIT_SUCCESS;
             }
         }
 
@@ -24,11 +24,11 @@ static int trac_find(char *trac_path)
         free(path);
 
         if (chdir("..")) 
-            return error_print("trac init: unable to change directory.");
+            return fprintf(stderr, "trac: unable to change directory.\n");
 
         path = getcwd(NULL, 0);
         if (path == NULL)
-            return error_print("trac init: unable to get new directory.");
+            return fprintf(stderr, "trac: unable to get new directory.\n");
     }
 
     return EXIT_SUCCESS;
@@ -38,17 +38,20 @@ static int cmd_init()
 {
     char *working_directory = getcwd(NULL, 0);
     if (working_directory == NULL)
-        return error_print("trac init: unable to get working directory.");
+        return fprintf(stderr, "trac: unable to get working directory.\n");
 
     char folder_path[PATH_MAX];
-    if (trac_find(folder_path))
-        return EXIT_FAILURE;
+    find_trac_dir(folder_path);
+
+    if (strcmp(folder_path, ""))
+        return !printf("Tracker is already initialized.\n");
 
     snprintf(folder_path, PATH_MAX, "%s/%s", working_directory, ".trac");
 
     if (mkdir(folder_path, 0755))
-        return error_print("trac init: failed to create .trac directory.");
+        return fprintf(stderr, "trac: failed to create .trac directory.\n");
 
     printf("Initialized tracker on \"%s\"\n", working_directory);
+
     return EXIT_SUCCESS;
 }

@@ -1,21 +1,18 @@
 static int help_menu()
 {
-    printf("A cli utility to track tasks.\n\n");
+    printf("A cli utility tool to track tasks.\n\n");
+
     printf("Usage: trac <command> [arguments]\n\n");
 
     printf("Commands:\n");
     printf("    help    Show help menu.\n");
     printf("    init    Initiate tracker.\n");
+    printf("    new     Create a new task.\n");
 
     printf("\n");
     printf("Use \"trac <command> --help\" for more information about a command.\n");
-    return EXIT_SUCCESS;
-}
 
-static int error_print(char *message)
-{
-    printf("%s\n", message);
-    return EXIT_FAILURE;
+    return EXIT_SUCCESS;
 }
 
     // printf("    new           Create a new task\n");

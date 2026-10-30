@@ -1,0 +1,16 @@
+[
+  {
+    "file": "./src/main.c",
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-c",
+      "-o",
+      "./build/main.o",
+      "./src/main.c"
+    ],
+    "directory": "/home/Abdelkader/Projects/Task Manager",
+    "output": "./build/main.o"
+  }
+]
